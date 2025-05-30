@@ -21,9 +21,15 @@ export default function PaymentMethod({ paymentMethod, setPaymentMethod }) {
       .trim();
   };
 
+  // Fake API call simulation
+  const handleFakePayment = (method) => {
+    alert(`Pretend calling ${method} API...`);
+  };
+
   return (
-    <div className="mb-6 font-bold">
-      <label className="inline-flex items-center">
+    <div className="mb-6 flex flex-col font-bold">
+      {/* Payment options */}
+      <label className="inline-flex items-center mb-3">
         <input
           type="radio"
           name="payment"
@@ -46,95 +52,158 @@ export default function PaymentMethod({ paymentMethod, setPaymentMethod }) {
           />
         </span>
       </label>
-      <div>
-        <span className="ml-2 text-sm m-4 text-gray-700">
-          Pay securely using your card
-        </span>
-      </div>
 
-      {paymentMethod === "credit" && (
-        <div className="mt-4 space-y-4 text-sm font-normal">
-          <div>
-            <label
-              className="block mb-1 font-medium text-gray-700"
-              htmlFor="cardNumber"
-            >
-              Card Number
-            </label>
-            <input
-              type="text"
-              id="cardNumber"
-              placeholder="1234 5678 9012 3456"
-              className={`w-full p-2 border rounded-md ${
-                cardNumber && !isCardNumberValid
-                  ? "border-red-500"
-                  : "border-gray-300"
-              }`}
-              value={cardNumber}
-              maxLength={19}
-              onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
-            />
-            {cardNumber && !isCardNumberValid && (
-              <p className="text-red-600 text-xs mt-1">
-                Enter a valid 16-digit card number.
-              </p>
-            )}
-          </div>
+      <label className="inline-flex items-center mb-3">
+        <input
+          type="radio"
+          name="payment"
+          value="stripe"
+          checked={paymentMethod === "stripe"}
+          onChange={() => setPaymentMethod("stripe")}
+          className="form-radio accent-amber-700"
+        />
+        <span className="ml-2">Stripe</span>
+      </label>
 
-          <div className="flex space-x-2">
-            <div className="w-1/2">
+      <label className="inline-flex items-center mb-3">
+        <input
+          type="radio"
+          name="payment"
+          value="paypal"
+          checked={paymentMethod === "paypal"}
+          onChange={() => setPaymentMethod("paypal")}
+          className="form-radio accent-amber-700"
+        />
+        <span className="ml-2">PayPal</span>
+      </label>
+
+      {/* Payment UI Sections */}
+      <div className="mt-6 flex flex-col text-sm font-normal">
+        {paymentMethod === "credit" && (
+          <div className="space-y-5 bg-white p-5 rounded-xl shadow-sm border">
+            <div>
               <label
-                className="block mb-1 font-medium text-gray-700"
-                htmlFor="expiry"
+                htmlFor="cardNumber"
+                className="block text-sm font-medium text-gray-800 mb-1"
               >
-                Expiry Date
+                Card Number
               </label>
               <input
                 type="text"
-                id="expiry"
-                placeholder="MM/YY"
-                className={`w-full p-2 border rounded-md ${
-                  expiry && !isExpiryValid
+                id="cardNumber"
+                placeholder="1234 5678 9012 3456"
+                className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-amber-700 ${
+                  cardNumber && !isCardNumberValid
                     ? "border-red-500"
                     : "border-gray-300"
                 }`}
-                maxLength={5}
-                value={expiry}
-                onChange={(e) => setExpiry(e.target.value)}
+                maxLength={19}
+                value={cardNumber}
+                onChange={(e) =>
+                  setCardNumber(formatCardNumber(e.target.value))
+                }
               />
-              {expiry && !isExpiryValid && (
-                <p className="text-red-600 text-xs mt-1">
-                  Enter a valid expiry date (MM/YY).
+              {cardNumber && !isCardNumberValid && (
+                <p className="text-red-500 text-xs mt-1">
+                  Enter a valid 16-digit card number.
                 </p>
               )}
             </div>
-            <div className="w-1/2">
-              <label
-                className="block mb-1 font-medium text-gray-700"
-                htmlFor="cvv"
-              >
-                CVV
-              </label>
-              <input
-                type="text"
-                id="cvv"
-                placeholder="123"
-                className={`w-full p-2 border rounded-md ${
-                  cvv && !isCvvValid ? "border-red-500" : "border-gray-300"
-                }`}
-                maxLength={4}
-                value={cvv}
-                onChange={(e) => setCvv(e.target.value)}
-              />
-              {cvv && !isCvvValid && (
-                <p className="text-red-600 text-xs mt-1">
-                  Enter a valid 3 or 4 digit CVV.
-                </p>
-              )}
+
+            <div className="flex gap-4">
+              <div className="w-1/2">
+                <label
+                  htmlFor="expiry"
+                  className="block text-sm font-medium text-gray-800 mb-1"
+                >
+                  Expiry Date
+                </label>
+                <input
+                  type="text"
+                  id="expiry"
+                  placeholder="MM/YY"
+                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-amber-700 ${
+                    expiry && !isExpiryValid
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
+                  maxLength={5}
+                  value={expiry}
+                  onChange={(e) => setExpiry(e.target.value)}
+                />
+                {expiry && !isExpiryValid && (
+                  <p className="text-red-500 text-xs mt-1">
+                    Enter a valid expiry date (MM/YY).
+                  </p>
+                )}
+              </div>
+
+              <div className="w-1/2">
+                <label
+                  htmlFor="cvv"
+                  className="block text-sm font-medium text-gray-800 mb-1"
+                >
+                  CVV
+                </label>
+                <input
+                  type="text"
+                  id="cvv"
+                  placeholder="123"
+                  className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-amber-700 ${
+                    cvv && !isCvvValid ? "border-red-500" : "border-gray-300"
+                  }`}
+                  maxLength={4}
+                  value={cvv}
+                  onChange={(e) => setCvv(e.target.value)}
+                />
+                {cvv && !isCvvValid && (
+                  <p className="text-red-500 text-xs mt-1">
+                    Enter a valid 3 or 4 digit CVV.
+                  </p>
+                )}
+              </div>
             </div>
+
+            <button
+              disabled={!isCreditFormValid}
+              onClick={() => alert("Pretend Credit Card payment processed")}
+              className={`w-full py-2 rounded-lg font-semibold transition duration-200 ${
+                isCreditFormValid
+                  ? "bg-amber-700 text-white hover:bg-amber-800"
+                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
+              }`}
+            >
+              Pay with Card
+            </button>
           </div>
-        </div>
-      )}
+        )}
+
+        {paymentMethod === "stripe" && (
+          <div className="p-5 border rounded-xl bg-white shadow-sm">
+            <h3 className="font-semibold text-gray-800 mb-2">Stripe Payment</h3>
+            <p className="text-gray-600">Simulated Stripe checkout flow.</p>
+            <button
+              onClick={() => handleFakePayment("Stripe")}
+              className="mt-3 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              Pay with Stripe
+            </button>
+          </div>
+        )}
+
+        {paymentMethod === "paypal" && (
+          <div className="p-5 border rounded-xl bg-white shadow-sm">
+            <h3 className="font-semibold text-gray-800 mb-2">PayPal Payment</h3>
+            <p className="text-gray-600">Simulated PayPal login and payment.</p>
+            <button
+              onClick={() => handleFakePayment("PayPal")}
+              className="mt-3 px-5 py-2 bg-yellow-500 text-black rounded-lg hover:bg-yellow-600 transition"
+            >
+              Pay with PayPal
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
