@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CreditCard } from "lucide-react";
+import PaymentMethod from "./PaymentMethod";
 import { useNavigate } from "react-router-dom";
 
 const sampleOrderData = {
@@ -108,85 +109,12 @@ export default function RightOrderSummary({ paymentMethod, setPaymentMethod }) {
       </div>
 
       {/* Payment method selection */}
+      {/* Payment method selection */}
       <div className="mb-6 font-bold">
-        <label className="inline-flex items-center">
-          <input
-            type="radio"
-            name="payment"
-            value="credit"
-            checked={paymentMethod === "credit"}
-            onChange={() => setPaymentMethod("credit")}
-            className="form-radio accent-amber-700"
-          />
-          <span className="ml-2 flex items-center">
-            Credit / Debit Card
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
-              alt="Visa"
-              className="w-6 h-4 ml-2 mr-1"
-            />
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png"
-              alt="MasterCard"
-              className="w-6 h-4 mr-2"
-            />
-          </span>
-        </label>
-        <div>
-          <span className="ml-2 text-sm m-4 text-gray-700">
-            Pay securely using your card
-          </span>
-        </div>
-
-        {paymentMethod === "credit" && (
-          <div className="mt-4 space-y-4 text-sm font-normal">
-            <div>
-              <label
-                className="block mb-1 font-medium text-gray-700"
-                htmlFor="cardNumber"
-              >
-                Card Number
-              </label>
-              <input
-                type="text"
-                id="cardNumber"
-                placeholder="1234 5678 9012 3456"
-                className="w-full p-2 border border-gray-300 rounded-md"
-              />
-            </div>
-
-            <div className="flex space-x-2">
-              <div className="w-1/2">
-                <label
-                  className="block mb-1 font-medium text-gray-700"
-                  htmlFor="expiry"
-                >
-                  Expiry Date
-                </label>
-                <input
-                  type="text"
-                  id="expiry"
-                  placeholder="MM/YY"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="w-1/2">
-                <label
-                  className="block mb-1 font-medium text-gray-700"
-                  htmlFor="cvv"
-                >
-                  CVV
-                </label>
-                <input
-                  type="text"
-                  id="cvv"
-                  placeholder="123"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-          </div>
-        )}
+        <PaymentMethod
+          paymentMethod={paymentMethod}
+          setPaymentMethod={setPaymentMethod}
+        />
       </div>
 
       <div className="mb-4 flex flex-col space-y-2 font-bold text-gray-800">
